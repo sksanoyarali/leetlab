@@ -1,0 +1,36 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/migrations/
+
+# Output builds (optional, depending on framework)
+dist/
+build/
+
+# Editor settings (optional)
+.vscode/
+.idea/
+
+# TypeScript (optional)
+*.tsbuildinfo
+
+# Mac system files
+.DS_Store
+
+# Docker (optional)
+docker-compose.override.yml
