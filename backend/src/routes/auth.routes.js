@@ -8,7 +8,7 @@ import {
 const authRoutes = Router()
 
 authRoutes.post('/register', register)
-authRoutes.post('/logout', login)
+authRoutes.post('/login', login)
 authRoutes.get('/logout', logout)
 authRoutes.get('/check', check)
 export default authRoutes
