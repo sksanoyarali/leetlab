@@ -102,7 +102,7 @@ export const logout = async (req, res) => {
       sameSite: 'strict',
       secure: process.env.NODE_ENV !== 'development',
     })
-    res.status(204).json({
+    res.status(200).json({
       success: true,
       message: 'User logged out successfully',
     })
@@ -113,4 +113,20 @@ export const logout = async (req, res) => {
     })
   }
 }
-export const check = async (req, res) => {}
+export const check = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: 'User authenticated successfully',
+      user: req.user,
+    })
+  } catch (error) {
+    console.error('Error in check')
+    return (
+      res.status(500),
+      json({
+        error: 'error checking user',
+      })
+    )
+  }
+}
