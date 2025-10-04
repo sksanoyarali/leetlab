@@ -41,5 +41,28 @@ const authMiddleware = async (req, res, next) => {
     })
   }
 }
-
-export { authMiddleware }
+const checkAdmin = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        role: true,
+      },
+    })
+    if (!user || user.role !== 'ADMIN') {
+      return res.status(403).json({
+        message: 'Forbidden-you dont have permission to access this resource ',
+      })
+    }
+    next()
+  } catch (error) {
+    console.error('Error checking admin role')
+    return res.status(500).json({
+      error: 'Error checking user role',
+    })
+  }
+}
+export { authMiddleware, checkAdmin }
