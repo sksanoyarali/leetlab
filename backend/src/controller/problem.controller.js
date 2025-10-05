@@ -82,9 +82,52 @@ const createProblem = async (req, res) => {
   }
 }
 
-const getAllProblems = async (req, res) => {}
+const getAllProblems = async (req, res) => {
+  try {
+    const problems = await db.problem.findMany()
+    if (!problems) {
+      return res.status(404).json({
+        error: 'No problem found',
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Problems fetched successfully',
+      problems,
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      error: 'Error while fetching problems',
+    })
+  }
+}
 
-const getProblemById = async (req, res) => {}
+const getProblemById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const problem = await db.problem.findUnique({
+      where: {
+        id,
+      },
+    })
+    if (!problem) {
+      return res.status(404).json({
+        error: 'Problem not found',
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'problem fetched successfully',
+      problem,
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      error: 'Error while fetching problems',
+    })
+  }
+}
 
 const getAllproblemsSolvedByUser = async (req, res) => {}
 
