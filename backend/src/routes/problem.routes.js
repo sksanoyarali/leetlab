@@ -3,17 +3,14 @@ import { authMiddleware, checkAdmin } from '../middlewares/auth.middleware.js'
 import {
   createProblem,
   deleteProblem,
+  getAllProblems,
   getAllproblemsSolvedByUser,
   getProblemById,
   updateProblem,
 } from '../controller/problem.controller.js'
 const problemRoutes = express.Router()
 problemRoutes.post('/create-problem', authMiddleware, checkAdmin, createProblem)
-problemRoutes.get(
-  '/get-all-problems',
-  authMiddleware,
-  getAllproblemsSolvedByUser
-)
+problemRoutes.get('/get-all-problems', authMiddleware, getAllProblems)
 problemRoutes.get('/get-problem/:id', authMiddleware, getProblemById)
 problemRoutes.put(
   '/update-problem/:id',
@@ -28,7 +25,7 @@ problemRoutes.delete(
   deleteProblem
 )
 problemRoutes.get(
-  'get-solved-problems',
+  '/get-solved-problems',
   authMiddleware,
   getAllproblemsSolvedByUser
 )
