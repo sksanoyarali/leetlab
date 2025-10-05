@@ -18,7 +18,7 @@ enum UserRole{
   USER
 }
 enum Difficulty{
-  Easy
+  EASY
   MEDIUM
   HARD
 }
@@ -41,7 +41,7 @@ model Problem{
   tags String[]
   userId String
   examples Json
-  contraints String
+  constraints String
   hints String?
   editorials String?
 
