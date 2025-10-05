@@ -18,7 +18,6 @@ const createProblem = async (req, res) => {
     codeSnippets,
     referenceSolutions,
   } = req.body
-  console.log('create problem')
 
   if (req.user.role !== 'ADMIN') {
     return res.status(403).json({
@@ -40,9 +39,9 @@ const createProblem = async (req, res) => {
         stdin: input,
         expected_output: output,
       }))
-      console.log('submission ready')
 
       const submissionResults = await submitBatch(submissions)
+
       const tokens = submissionResults.map((res) => res.token)
 
       const results = await pollBatchResults(tokens)
@@ -56,30 +55,27 @@ const createProblem = async (req, res) => {
           })
         }
       }
-      //save the problem to database
-      const newProblem = await db.problem.create({
-        data: {
-          title,
-          description,
-          difficulty,
-          tags,
-          examples,
-          constraints,
-          testcases,
-          codeSnippets,
-          referenceSolutions,
-          userId: req.user.id,
-        },
-      })
-      return res.status(201).json({
-        message: 'problem created successfully',
-        success: true,
-        problem: newProblem,
-      })
     }
+    const newProblem = await db.problem.create({
+      data: {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+        userId: req.user.id,
+      },
+    })
+    return res.status(201).json({
+      message: 'problem created successfully',
+      success: true,
+      problem: newProblem,
+    })
   } catch (error) {
-    console.log('Error in problem creation', error)
-
     return res.status(500).json({
       error: 'Error in problem creation',
     })
