@@ -67,7 +67,7 @@ model Submission{
   stdin String?
   stdout String?
   stderr String?
-  compileOutput String
+  compileOutput String?
   status String// Accepted ,wrong answer
   memory String?
   time String?
