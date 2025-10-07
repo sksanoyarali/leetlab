@@ -8,7 +8,7 @@ import {
 
 const submissionRoutes = express.Router()
 
-submissionRoutes.get('/get-all-submmissions', authMiddleware, getAllSubmission)
+submissionRoutes.get('/get-all-submissions', authMiddleware, getAllSubmission)
 submissionRoutes.get(
   '/get-submission/:ProblemId',
   authMiddleware,
