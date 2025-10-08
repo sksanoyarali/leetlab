@@ -128,6 +128,7 @@ const getProblemById = async (req, res) => {
     })
   }
 }
+
 const updateProblem = async (req, res) => {
   const {
     title,
@@ -249,7 +250,35 @@ const deleteProblem = async (req, res) => {
   }
 }
 
-const getAllproblemsSolvedByUser = async (req, res) => {}
+const getAllproblemsSolvedByUser = async (req, res) => {
+  try {
+    const problems = await db.problem.findMany({
+      where: {
+        solvedBy: {
+          some: {
+            userId: req.user.id,
+          },
+        },
+      },
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    })
+    return res.status(200).json({
+      success: true,
+      message: 'Problems fetched successfully',
+      problems,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Error getting problems',
+    })
+  }
+}
 
 export {
   createProblem,
