@@ -143,6 +143,7 @@ const updateProblem = async (req, res) => {
   } = req.body
 
   if (req.user.role !== 'ADMIN') {
+    
     return res.status(403).json({
       error: 'You are not allowed to create a problem',
     })
