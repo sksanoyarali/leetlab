@@ -6,12 +6,19 @@ import problemRoutes from './routes/problem.routes.js'
 import executeRoutes from './routes/executioncode.routes.js'
 import submissionRoutes from './routes/submission.routes.js'
 import playlistRoutes from './routes/playlist.routes.js'
+import cors from 'cors'
 dotenv.config()
 const app = express()
 const port = process.env.PORT
 app.get('/', (req, res) => {
   res.send('main route')
 })
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // frontend URL (Vite)
+    credentials: true, // allow cookies / auth headers
+  })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())

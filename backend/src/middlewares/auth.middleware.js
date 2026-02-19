@@ -1,8 +1,12 @@
 import jwt from 'jsonwebtoken'
 import { db } from '../libs/db.js'
+import dotenv from 'dotenv'
+dotenv.config()
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.jwt
+    console.log(token)
+
     if (!token) {
       return res.status(401).json({
         message: 'Unauthorized access',
@@ -27,6 +31,8 @@ const authMiddleware = async (req, res, next) => {
         role: true,
       },
     })
+    console.log(user)
+
     if (!user) {
       return res.status(404).json({
         message: 'User not found',
