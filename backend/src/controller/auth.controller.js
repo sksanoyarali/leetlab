@@ -4,6 +4,8 @@ import { UserRole } from '../generated/prisma/index.js'
 import jwt from 'jsonwebtoken'
 export const register = async (req, res) => {
   const { email, password, name } = req.body
+  console.log(email, name)
+
   try {
     const existingUser = await db.user.findUnique({
       where: {
@@ -28,12 +30,13 @@ export const register = async (req, res) => {
       expiresIn: '7d',
     })
     res.cookie('jwt', token, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV !== 'development',
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true, //prevents xss attack
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
     return res.status(201).json({
+      success: true,
       message: 'User created successfully',
       user: {
         id: newUser.id,
@@ -73,10 +76,10 @@ export const login = async (req, res) => {
     })
 
     res.cookie('jwt', token, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV !== 'development',
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true, //prevents xss attack
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
 
     return res.status(201).json({
@@ -98,9 +101,10 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     res.clearCookie('jwt', {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV !== 'development',
+      httpOnly: true, //prevents xss attack
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
     res.status(200).json({
       success: true,
@@ -122,11 +126,8 @@ export const check = async (req, res) => {
     })
   } catch (error) {
     console.error('Error in check')
-    return (
-      res.status(500),
-      json({
-        error: 'error checking user',
-      })
-    )
+    return res.status(500).json({
+      error: 'error checking user',
+    })
   }
 }
